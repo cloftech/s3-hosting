@@ -50,12 +50,16 @@ jobs:
         working-directory: infrabase/
         run: terraform apply -var-file="dev.tfvars" -auto-approve
       
+      - name: list directory
+        working-directory: codebase/my-app/
+        run: ls -a
+        
       - name: Install dependencies
-        working-directory: codebase/my-app
+        working-directory: codebase/my-app/
         run: npm install
 
       - name: Build App
-        working-directory: codebase/my-app
+        working-directory: codebase/my-app/ 
         run: npm run build
         
 
