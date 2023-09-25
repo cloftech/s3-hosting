@@ -8,6 +8,9 @@ on:
 env:
   AWS_REGION: "us-east-1"
   OIDC_ARN: arn:aws:iam::681553805609:role/OCID
+  bucket_name: "hassan"
+  project_name: "static-hosting"
+  environment_name: "dev"
 
 permissions:
   id-token: write
