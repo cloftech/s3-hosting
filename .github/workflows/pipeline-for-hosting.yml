@@ -50,9 +50,9 @@ jobs:
         working-directory: infrabase/
         run: terraform apply -var-file="dev.tfvars" -auto-approve
       
-      - name: Install dependencies
-        working-directory: codebase/my-app
-        run: npm install
+      # - name: Install dependencies
+      #   working-directory: codebase/my-app
+      #   run: npm install
 
       - name: Build App
         working-directory: codebase/my-app
