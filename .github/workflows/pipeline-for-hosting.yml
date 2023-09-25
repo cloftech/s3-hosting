@@ -57,6 +57,7 @@ jobs:
       - name: Build App
         working-directory: codebase/my-app
         run: npm run build
+        
 
       - name: Deploy static site to S3 bucket
         run: aws s3 sync ./public/ s3://static-hosting-dev-hassan-bucket
