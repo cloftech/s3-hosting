@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "static_hosting" {
-  bucket = "${var.project_name}-${var.environment_name}-h1-bucket"
+  bucket = "${var.project_name}-${var.environment_name}-${var.bucket_name}-bucket"
 }
 
 resource "aws_s3_bucket_public_access_block" "static_hosting_public_access" {
