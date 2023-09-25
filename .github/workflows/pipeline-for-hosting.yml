@@ -39,10 +39,12 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
   
       - name: Terraform Init
-        run: terraform init -chdir infrabase
+        working-directory: infrabase/
+        run: terraform init
   
       - name: Terraform Apply
-        run: terraform apply -auto-approve -chdir infrabase
+        working-directory: infrabase/
+        run: terraform apply -auto-approve
       
       - name: Install dependencies
         run: npm install
