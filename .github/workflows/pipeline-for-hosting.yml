@@ -62,7 +62,7 @@ jobs:
         working-directory: infrabase/
         run: |
           terraform output -json > terraform-output.json
-          echo "::set-output name=output_value::$(cat terraform-output.json)"
+          echo "::set-env name=S3_BUCKET_NAME::$(jq -r '.bucket_name.value' terraform-output.json)"
       
       #Deploying website on S3 and install dependencies.
       - name: Install dependencies
@@ -74,4 +74,4 @@ jobs:
         run: npm run build
         
       - name: Deploy static site to S3 bucket
-        run: aws s3 sync ./codebase/my-app/build/ s3://${{ steps.fetch-terraform-output.outputs.output_value }}
+        run: aws s3 sync ./codebase/my-app/build/ s3://${{ env.S3_BUCKET_NAME }}
