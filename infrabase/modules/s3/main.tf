@@ -1,3 +1,4 @@
+#Provisioning S3 static hosting bucket.
 resource "aws_s3_bucket" "static_hosting" {
   bucket = "${var.project_name}-${var.environment_name}-${var.bucket_name}-bucket"
 }
@@ -24,6 +25,7 @@ resource "aws_s3_bucket_acl" "static_hosting_bucket_acl" {
   acl        = "public-read"
 }
 
+#Making bucket poliy.
 resource "aws_s3_bucket_policy" "static_hosting_bucket_policy" {
   bucket = aws_s3_bucket.static_hosting.id
 
@@ -51,6 +53,7 @@ resource "aws_s3_bucket_website_configuration" "static_hosting_bucket_website_co
   }
 }
 
+#Putting objects in the bucket.
 resource "aws_s3_object" "hosting_bucket_files" {
   bucket = aws_s3_bucket.static_hosting.id
 

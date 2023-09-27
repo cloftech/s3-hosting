@@ -1,3 +1,4 @@
+#Automating S3 infa and deploying static website on S3 accessing through OIDC.  
 name: Deploy Website
 
 on:
@@ -5,6 +6,7 @@ on:
     branches:
     - feature/static-hosting
 
+#Environment variables & permissions.
 env:
   AWS_REGION: "us-east-1"
   OIDC_ARN: arn:aws:iam::681553805609:role/OCID
@@ -13,6 +15,7 @@ permissions:
   id-token: write
   contents: read
 
+#Defining the jobs for deploying the website.
 jobs:
   deploy:
     name: Deploy static site to S3 bucket
@@ -29,7 +32,7 @@ jobs:
       - name: Installing Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: "18" # Adjust to your desired version
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -37,7 +40,8 @@ jobs:
           role-to-assume: ${{ env.OIDC_ARN }}
           role-session-name: git_role_session
           aws-region: ${{ env.AWS_REGION }}
-  
+
+      #Deploying S3 infrastructure.   
       - name: Terraform Init
         working-directory: infrabase/
         run: terraform init
@@ -46,6 +50,13 @@ jobs:
         working-directory: infrabase/
         run: terraform apply -var-file="dev.tfvars" -auto-approve
 
+      #Fetch the S3 bucket name from Terraform output
+      - name: Get S3 Bucket Name
+        id: get_bucket_name
+        working-directory: infrabase/
+        run: echo "::set-output name=website_url::$(terraform output -raw website_url)"
+      
+      #Deploying website on S3 and install dependencies.
       - name: Install dependencies
         working-directory: codebase/my-app/
         run: npm install
@@ -55,4 +66,4 @@ jobs:
         run: npm run build
         
       - name: Deploy static site to S3 bucket
-        run: aws s3 sync ./codebase/my-app/build/ s3://static-hosting-dev-hassan-bucket
+        run: aws s3 sync ./codebase/my-app/build/ s3://${{ steps.get_bucket_name.outputs.website_url }}
