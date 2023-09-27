@@ -67,4 +67,4 @@ jobs:
         run: npm run build
         
       - name: Deploy static site to S3 bucket
-        run: aws s3 sync ./codebase/my-app/build/ "s3://${{ steps.fetch-terraform-output.outputs.bucket }}"
+        run: aws s3 sync ./codebase/my-app/build/ "s3://${{ steps.fetch-terraform-output.outputs.url}}"
