@@ -46,26 +46,30 @@ jobs:
       - name: Terraform Init
         working-directory: infrabase/
         run: terraform init
+
+      - name: Terraform Destroy
+        working-directory: infrabase/
+        run: terraform destroy -var-file="dev.tfvars" -auto-approve
   
-      - name: Terraform Apply
-        working-directory: infrabase/
-        run: terraform apply -var-file="dev.tfvars" -auto-approve
+      # - name: Terraform Apply
+      #   working-directory: infrabase/
+      #   run: terraform apply -var-file="dev.tfvars" -auto-approve
 
-      #Fetch the S3 bucket name from Terraform output
-      - name: Get S3 Bucket Name
-        id: fetch-terraform-output
-        working-directory: infrabase/
-        run: |
-          echo "bucket_name=$(terraform output -raw bucket)" >> $GITHUB_OUTPUT
+      # #Fetch the S3 bucket name from Terraform output
+      # - name: Get S3 Bucket Name
+      #   id: fetch-terraform-output
+      #   working-directory: infrabase/
+      #   run: |
+      #     echo "bucket_name=$(terraform output -raw bucket)" >> $GITHUB_OUTPUT
       
-      #Deploying website on S3 and install dependencies.
-      - name: Install dependencies
-        working-directory: codebase/my-app/
-        run: npm install
+      # #Deploying website on S3 and install dependencies.
+      # - name: Install dependencies
+      #   working-directory: codebase/my-app/
+      #   run: npm install
 
-      - name: Build App
-        working-directory: codebase/my-app/ 
-        run: npm run build
+      # - name: Build App
+      #   working-directory: codebase/my-app/ 
+      #   run: npm run build
         
-      - name: Deploy static site to S3 bucket
-        run: aws s3 sync ./codebase/my-app/build/ "s3://${{ steps.fetch-terraform-output.outputs.bucket_name}}"
+      # - name: Deploy static site to S3 bucket
+      #   run: aws s3 sync ./codebase/my-app/build/ "s3://${{ steps.fetch-terraform-output.outputs.bucket_name}}"
