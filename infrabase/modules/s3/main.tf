@@ -53,23 +53,3 @@ resource "aws_s3_bucket_website_configuration" "static_hosting_bucket_website_co
   }
 }
 
-# #Putting objects in the bucket.
-# resource "aws_s3_object" "hosting_bucket_files" {
-#   bucket = aws_s3_bucket.static_hosting.id
-
-#   for_each = module.template_files.files
-
-#   key          = each.key
-#   content_type = each.value.content_type
-
-#   source  = each.value.source_path
-#   content = each.value.content
-
-#   etag = each.value.digests.md5
-# }
-
-# module "template_files" {
-#   source = "hashicorp/dir/template"
-
-#   base_dir = "${path.module}/../../../codebase/my-app/build"
-# }
