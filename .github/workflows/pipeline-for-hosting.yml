@@ -5,6 +5,12 @@ on:
   push:
     branches:
     - feature/static-hosting
+  
+  workflow_call:
+    outputs:
+      website_url:
+        description: Output from Terraform
+        value: ${{ jobs.terraform.output.website_url }}
 
 #Environment variables & permissions.
 env:
@@ -52,9 +58,11 @@ jobs:
 
       #Fetch the S3 bucket name from Terraform output
       - name: Get S3 Bucket Name
-        id: get_bucket_name
+        id: fetch-terraform-output
         working-directory: infrabase/
-        run: echo "::set-output name=website_url::$(terraform output -raw website_url)"
+        run: |
+          terraform output -json > terraform-output.json
+          echo "::set-output name=output_value::$(cat terraform-output.json)"
       
       #Deploying website on S3 and install dependencies.
       - name: Install dependencies
@@ -66,4 +74,4 @@ jobs:
         run: npm run build
         
       - name: Deploy static site to S3 bucket
-        run: aws s3 sync ./codebase/my-app/build/ s3://${{ steps.get_bucket_name.outputs.website_url }}
+        run: aws s3 sync ./codebase/my-app/build/ s3://${{ steps.fetch-terraform-output.outputs.output_value }}"
