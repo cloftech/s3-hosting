@@ -56,6 +56,7 @@ jobs:
         working-directory: infrabase/
         run: |
           echo "::set-output name=url_hassan_b::$(terraform output -raw bucket)"
+          echo "url_hassan_b"
       
       #Deploying website on S3 and install dependencies.
       - name: Install dependencies
