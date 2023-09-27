@@ -61,7 +61,7 @@ jobs:
         id: fetch-terraform-output
         working-directory: infrabase/
         run: |
-          echo "::set-output name=S3_BUCKET_NAME::$(terraform output -raw website_url)"
+          echo "::set-output name=url::$(terraform output -raw website_url)"
       
       #Deploying website on S3 and install dependencies.
       - name: Install dependencies
@@ -73,4 +73,4 @@ jobs:
         run: npm run build
         
       - name: Deploy static site to S3 bucket
-        run: aws s3 sync ./codebase/my-app/build/ "s3://${{ steps.fetch-terraform-output.outputs.S3_BUCKET_NAME }}"
+        run: aws s3 sync ./codebase/my-app/build/ "s3://${{ steps.fetch-terraform-output.outputs.url }}"
