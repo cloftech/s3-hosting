@@ -1,0 +1,44 @@
+# Logs
+*.log
+crash.log
+.idea/
+# MacOS
+.DS_Store
+
+# Terraform
+**state.bak
+modules/**/*.hcl
+
+*_override.tf
+*_override.tf.json
+override.tf
+override.tf.json
+
+*.tfstate
+*.tfstate.*
+
+terraform.tfvars
+*.tfvars.json
+
+.terraform
+.terraformrc
+terraform.rc
+
+.terraform.lock.hcl
+
+*.local.tf
+# Terragrunt
+.terragrunt-cache
+
+# VSCode
+.vscode
+
+# Misc
+/secrets.yamlcd 
+Makefile
+
+# cdktf
+node_modules
+cdktf.out
+cdktf.log
+.gen
